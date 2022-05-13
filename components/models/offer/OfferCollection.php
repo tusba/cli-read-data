@@ -11,10 +11,6 @@ class OfferCollection extends ArrayObject implements OfferCollectionInterface
     /** @var OfferInterface[] */
     private array $items;
 
-    /**
-     * @inheritDoc
-     * @param OfferInterface[] $array
-     */
     public function __construct($array = array(), $flags = 0, $iteratorClass = "ArrayIterator")
     {
         $this->initItems($array);
@@ -35,7 +31,7 @@ class OfferCollection extends ArrayObject implements OfferCollectionInterface
         return parent::getIterator();
     }
 
-    private function initItems($rawItems)
+    private function initItems(array $rawItems): void
     {
         $this->items = array_map(fn ($item) => (new Offer())->load($item), $rawItems);
     }

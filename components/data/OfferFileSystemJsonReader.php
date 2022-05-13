@@ -2,13 +2,11 @@
 
 namespace components\data;
 
-use components\models\offer\OfferCollection;
-use components\models\offer\OfferCollectionInterface;
 use Exception;
 
-class OfferFileSystemJsonReader implements ReaderInterface
+class OfferFileSystemJsonReader extends OfferReader
 {
-    public function read(string $input): OfferCollectionInterface
+    protected function readAsArray(string $input): array
     {
         if (!file_exists($input) || !($raw = file_get_contents($input))) {
             throw new Exception("Failed to read `{$input}`");
@@ -18,6 +16,6 @@ class OfferFileSystemJsonReader implements ReaderInterface
             throw new Exception("Failed to parse `{$input}`");
         }
 
-        return new OfferCollection($data);
+        return $data;
     }
 }
