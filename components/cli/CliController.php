@@ -2,6 +2,8 @@
 
 namespace components\cli;
 
+use components\data\OfferFileSystemJsonReader;
+use components\data\ReaderInterface;
 use components\logger\InitLoggerTrait;
 use components\logger\LoggerInterface;
 use components\services\DataFilterService;
@@ -13,6 +15,7 @@ class CliController
     const COUNT_BY_VENDOR_ID = 'count_by_vendor_id';
 
     private LoggerInterface $logger;
+    private ReaderInterface $reader;
     private string $command;
     private array $options;
 
@@ -21,6 +24,7 @@ class CliController
     public function __construct()
     {
         $this->initLogger();
+        $this->reader = new OfferFileSystemJsonReader();
     }
 
     public function run(array $argv): string | int
@@ -29,10 +33,10 @@ class CliController
         $this->validate();
         $this->logger->log(['cmd' => $this->command, 'args' => $this->options]);
 
-        $data = [];
-        $this->logger->log(['data' => ['total' => count($data)]]);
+        $dataCollection = $this->reader->read(implode(DS, [__DIR__, '..', '..', 'data', 'offers.json']));
+        $this->logger->log(['data' => ['total' => count($dataCollection)]]);
 
-        $dataFilterService = new DataFilterService($data);
+        $dataFilterService = new DataFilterService($dataCollection);
         switch ($this->command) {
             case self::COUNT_BY_PRICE_RANGE:
                 $filteredData = $dataFilterService->filterByPriceRange(...$this->options);
@@ -41,7 +45,7 @@ class CliController
                 $filteredData = $dataFilterService->filterByVendorId(...$this->options);
                 break;
             default:
-                throw new Exception("Not implemented for [{$this->command}]");
+                throw new Exception("Not implemented for `{$this->command}`");
         }
         $this->logger->log(['data' => ['result' => $filteredData]]);
 

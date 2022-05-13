@@ -32,7 +32,7 @@ class OfferCollection extends ArrayObject implements OfferCollectionInterface
 
     public function getIterator(): Iterator
     {
-        return $this->getIterator();
+        return parent::getIterator();
     }
 
     private function initItems($rawItems)
