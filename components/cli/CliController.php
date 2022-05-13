@@ -23,7 +23,7 @@ class CliController
         $this->initLogger();
     }
 
-    public function run(array $argv): mixed
+    public function run(array $argv): string | int
     {
         $this->resolve($argv);
         $this->validate();

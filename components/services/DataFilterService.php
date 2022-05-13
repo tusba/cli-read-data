@@ -8,12 +8,12 @@ class DataFilterService
     {
     }
 
-    public function filterByPriceRange($from, $to): array
+    public function filterByPriceRange(string|int|float $from, string|int|float $to): array
     {
         return $this->data;
     }
 
-    public function filterByVendorId($id): array
+    public function filterByVendorId(string|int $id): array
     {
         return $this->data;
     }
