@@ -7,7 +7,7 @@ use Exception;
 
 class FileSystemLogger implements LoggerInterface
 {
-    public function __construct(private $filePath)
+    public function __construct(private string $filePath)
     {
         if (!file_exists(dirname($this->filePath))) {
             throw new Exception('Directory does not exist');
