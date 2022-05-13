@@ -33,7 +33,9 @@ class CliController
         $this->validate();
         $this->logger->log(['cmd' => $this->command, 'args' => $this->options]);
 
-        $dataCollection = $this->reader->read(implode(DS, [__DIR__, '..', '..', 'data', 'offers.json']));
+        $dataCollection = $this->reader->read(
+            implode(DIRECTORY_SEPARATOR, [__DIR__, '..', '..', 'data', 'offers.json'])
+        );
         $this->logger->log(['data' => ['total' => count($dataCollection)]]);
 
         $dataFilterService = new DataFilterService($dataCollection);
